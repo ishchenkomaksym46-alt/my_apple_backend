@@ -16,6 +16,7 @@ import { orderOneController } from './controlers/orderOneController.js';
 import { orderCartController } from './controlers/orderCartController.js';
 import { getOrderController } from './controlers/getOrdersController.js';
 import { checkRoleController } from './controlers/checkRoleController.js';
+import { pool } from './db.js';
 
 const app = express();
 
@@ -39,5 +40,10 @@ app.post('/order/cart', auth, orderCartController);
 app.get('/order/:id', auth, orderOneController);
 app.get('/getOrders', auth, getOrderController);
 app.get('/checkRole', auth, checkRoleController);
+app.get('/test-db', async (req, res) => {
+    const db = await pool.query('SELECT NOW()');
+
+    res.send(db);
+})
 
 app.listen(process.env.PORT, () => console.log('Server started!'));
