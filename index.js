@@ -47,7 +47,7 @@ app.get('/test-db', async (req, res) => {
         res.send(db);
     } catch (error) {
         console.error(error);
-        res.send(error.message);
+        res.send('error!');
     }
 })
 
