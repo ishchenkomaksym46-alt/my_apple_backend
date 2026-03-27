@@ -40,15 +40,5 @@ app.post('/order/cart', auth, orderCartController);
 app.get('/order/:id', auth, orderOneController);
 app.get('/getOrders', auth, getOrderController);
 app.get('/checkRole', auth, checkRoleController);
-app.get('/test-db', async (req, res) => {
-    try {
-        const db = await pool.query('SELECT NOW()');
-
-        res.send(db);
-    } catch (error) {
-        console.error(error);
-        res.send('error!');
-    }
-})
 
 app.listen(process.env.PORT, () => console.log('Server started!'));
