@@ -6,7 +6,7 @@ export const productController = async (req, res) => {
 
     const pageNum = parseInt(page);
     if (isNaN(pageNum) || pageNum < 1) {
-        return res.status(400).json({ message: 'Invalid page number' });
+        return res.status(400).json({ success: false, message: 'Invalid page number' });
     }
 
     const offset = (pageNum - 1) * limit;
@@ -26,12 +26,12 @@ export const productController = async (req, res) => {
         const totalPages = Math.ceil(totalItems / limit);
 
         if (pageNum > totalPages && totalPages > 0) {
-            return res.status(404).json({ message: 'Page not found' });
+            return res.status(404).json({ success: false, message: 'Page not found' });
         }
 
         const products = await pool.query(`SELECT * FROM products ORDER BY ${orderBy} LIMIT $1 OFFSET $2`, [limit, offset]);
         return res.json(products.rows);
     } catch (error) {
-        return res.status(500).json({ message: 'Cannot get current products!' });
+        return res.status(500).json({ success: false, message: 'Cannot get current products!' });
     }
 }
