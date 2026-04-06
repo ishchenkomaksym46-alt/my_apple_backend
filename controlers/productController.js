@@ -1,7 +1,9 @@
 import { pool } from "../db.js";
 
 export const productController = async (req, res) => {
-    const { sort = 'id_desc' } = req.query;
+    const { sort = 'id_desc', page = 1 } = req.query;
+    const limit = 10
+    const offset = ( page - 1 ) * limit;
 
     const sortMap = {
         price_asc: 'price ASC, id DESC',
@@ -13,7 +15,7 @@ export const productController = async (req, res) => {
     const orderBy = sortMap[sort] || sortMap.id_desc
 
     try {
-        const products = await pool.query(`SELECT * FROM products ORDER BY ${orderBy}`);
+        const products = await pool.query(`SELECT * FROM products ORDER BY ${orderBy} LIMIT $1 OFFSET $2`, [limit, offset]);
         return res.json(products.rows);
     } catch (error) {
         return res.status(500).json({ message: 'Cannot get current products!' });
